@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'master'
+      - 'flatpak'
 
 jobs:
   release:
@@ -44,3 +45,17 @@ jobs:
         run: |
           cd electron
           npm run publish
+
+      - name: Rename AppImage
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          cd electron/dist
+          mv *.AppImage migu.AppImage
+
+      - name: Upload AppImage Artifacts
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: appimage
+          path: electron/dist/migu.AppImage
+          if-no-files-found: error
