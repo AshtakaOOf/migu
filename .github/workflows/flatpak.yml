@@ -1,0 +1,30 @@
+name: Flatpak Build
+
+on:
+  workflow_run:
+    workflows: ["Electron Build and Release"]
+    types:
+      - completed
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: bilelmoussaoui/flatpak-github-actions:gnome-45
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download AppImage
+        uses: actions/download-artifact@v3
+        with:
+          name: appimage
+          path: .
+      - name: Build Flatpak from AppImage
+        run: |
+          flatpak-builder build --force-clean build-dir --install-deps-from=flathub --repo=repo flatpak/com.github.nocrypt.migu.yaml
+          flatpak build-bundle repo com.github.nocrypt.migu.flatpak com.github.nocrypt.migu
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: com.github.nocrypt.migu.flatpak
