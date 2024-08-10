@@ -4,6 +4,9 @@
 # Build output
 **/dist/
 **/build/
+**/.flatpak-builder
+**/build-dir
+**/repo
 
 # Dependencies
 node_modules

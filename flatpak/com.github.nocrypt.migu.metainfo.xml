@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+    <id type="desktop">com.github.nocrypt.migu</id>
+    <launchable type="desktop-id">com.github.nocrypt.migu.desktop</launchable>
+    <name>Migu</name>
+    <summary>Migu - Stream anime torrents.</summary>
+    <metadata_license>CC0-1.0</metadata_license>
+    <project_license>GPL-3.0</project_license>
+    <content_rating type="oars-1.1"/>
+    <developer_name>NoCrypt</developer_name>
+    <categories>
+        <category>AudioVideo</category>
+        <category>Video</category>
+    </categories>
+    <url type="homepage">https://miguapp.pages.dev</url>
+    <url type="bugtracker">https://github.com/NoCrypt/migu/issues</url>
+    <url type="help">https://github.com/NoCrypt/migu/discussions</url>
+    <url type="vcs-browser">https://github.com/NoCrypt/migu</url>
+    <description>
+        <p>
+            Stream anime torrents, real-time with no waiting for downloads.
+        </p>
+    </description>
+        <screenshots>
+        <screenshot type="default">
+            <image>https://miguapp.pages.dev/imgs/hero-dark.webp</image>
+        </screenshot>
+    </screenshots>
+    <releases>
+    </releases>
+</component>

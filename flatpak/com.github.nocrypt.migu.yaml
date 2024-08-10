@@ -1,0 +1,42 @@
+app-id: com.github.nocrypt.migu
+base: org.electronjs.Electron2.BaseApp
+base-version: '23.08'
+runtime: org.freedesktop.Platform
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+command: migu-run
+separate-locales: false
+finish-args:
+  - --device=dri
+  - --share=ipc
+  - --share=network
+  - --socket=x11
+  - --own-name=org.mpris.MediaPlayer2.chromium.instance3
+  - --socket=pulseaudio
+  - --filesystem=xdg-videos:rw
+  - --filesystem=xdg-run/discord-ipc-0:ro
+modules:
+  - name: migu
+    buildsystem: simple
+    build-commands:
+      - install -D migu-run -t /app/bin
+      - install -Dm644 com.github.nocrypt.migu.metainfo.xml -t /app/share/metainfo
+      - install -Dm644 com.github.nocrypt.migu.desktop -t /app/share/applications
+      - install -Dm644 com.github.nocrypt.migu.png /app/share/icons/hicolor/256x256/apps/com.github.nocrypt.migu.png
+
+      - mv electron-dist/linux-unpacked /app/bin/migu
+    sources:
+      - type: dir
+        path: .
+      - type: dir
+        path: ../electron/dist/
+        dest: electron-dist
+      - type: script
+        dest-filename: migu-run
+        commands:
+          - export TMPDIR="$XDG_RUNTIME_DIR/app/$FLATPAK_ID"
+          - export LD_LIBRARY_PATH="/app/bin/migu:$LD_LIBRARY_PATH"
+          - zypak-wrapper /app/bin/migu/migu "$@"
+      - type: file
+        path: ../electron/buildResources/icon.png
+        dest-filename: com.github.nocrypt.migu.png

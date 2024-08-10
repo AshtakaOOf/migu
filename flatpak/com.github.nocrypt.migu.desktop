@@ -1,0 +1,11 @@
+[Desktop Entry]
+Name=Migu
+Exec=migu-run %u
+Terminal=false
+Type=Application
+Icon=com.github.nocrypt.migu
+StartupWMClass=Migu
+Comment=Stream anime torrents, real-time with no waiting for downloads.
+Keywords=anime
+MimeType=x-scheme-handler/migu;
+Categories=AudioVideo;Video;
