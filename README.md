@@ -73,6 +73,30 @@ Includes all original Miru features, plus:
    pnpm build
    ```
 
+#### Build Flatpak
+1. Please do all steps listed in [Building for PC (Electron)](#building-for-pc-electron)
+
+2. Install flatpak, flathub remote and flatpak-builder (Ubuntu instructions)
+   ```bash
+	 sudo apt update
+	 sudo apt install flatpak
+	 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
+	 sudo apt install flatpak-builder
+	 ```
+
+3. Build the flatpak
+   ```bash
+	 flatpak-builder --force-clean build-dir --install-deps-from=flathub --repo=repo ../flatpak/com.github.nocrypt.migu.yaml # must execute from the electron directory
+	 ```
+4. Install the built flatpak (optional)
+	 ```bash
+	 flatpak-builder --user --install --force-clean build-dir --install-deps-from=flathub --repo=repo ../flatpak/com.github.nocrypt.migu.yaml
+	 ```
+5. Bundle Migu into a .flatpak (optional)
+	 ```bash
+	 flatpak build-bundle repo path/to/com.github.nocrypt.migu.flatpak com.github.nocrypt.migu # replace path/to/ with your desired output path
+	 ```
+
 ### Building for Android (Capacitor)
 1. Navigate to the Capacitor directory:
    ```bash

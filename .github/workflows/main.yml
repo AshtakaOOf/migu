@@ -5,6 +5,7 @@ on:
     branches:
       - 'main'
       - 'master'
+      - 'flatpak'
     paths-ignore:
       - '**.md'
       - '**.yml'
@@ -12,10 +13,18 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
 
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            container: null
+          - os: ubuntu-latest
+            container: bilelmoussaoui/flatpak-github-actions:gnome-45
+            options: --privileged
+          - os: macos-latest
+            container: null
 
     steps:
       - name: Check out Git repository
@@ -47,3 +56,22 @@ jobs:
         run: |
           cd electron
           npm run publish
+
+      - name: Build Flatpak
+        if: matrix.os == 'ubuntu-latest'
+        run: |
+          git config --global --add safe.directory /__w/migu/migu
+          cd electron
+          flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+          flatpak install --noninteractive -y org.freedesktop.Platform/x86_64/23.08
+          ../flatpak/update-metainfo.sh
+          flatpak-builder --user --install --force-clean build-dir --install-deps-from=flathub --repo=repo ../flatpak/com.github.nocrypt.migu.yaml
+          flatpak build-bundle repo dist/com.github.nocrypt.migu.flatpak com.github.nocrypt.migu
+
+      - name: Upload Flatpak Artifacts
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak
+          path: electron/dist/*.flatpak
+          if-no-files-found: error

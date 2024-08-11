@@ -12,7 +12,8 @@
     "web:build": "cross-env NODE_ENV=production webpack build",
     "electron:start": "electron ./build/main.js",
     "build": "npm run web:build && electron-builder",
-    "publish": "npm run web:build && electron-builder -p always"
+    "publish": "npm run web:build && electron-builder -p always",
+    "flatpak": "../flatpak/update-metainfo.sh && ../flatpak/flatpak.sh --install && ../flatpak/flatpak.sh --bundle"
   },
   "devDependencies": {
     "@electron/notarize": "^2.3.2",
@@ -104,7 +105,7 @@
         },
         {
           "arch": "x64",
-          "target": "deb"
+          "target": "tar.gz"
         }
       ]
     },
