@@ -1,13 +1,11 @@
 name: Electron Build and Release
 
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - 'main'
-      - 'master'
     paths-ignore:
-      - '**.md'
-      - '**.yml'
+      - "**.md"
+      - "**.yml"
 
 jobs:
   release:
@@ -29,8 +27,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'pnpm'
+          node-version: "20"
+          cache: "pnpm"
 
       - name: Install Setuptools for Python (macOS only)
         if: matrix.os == 'macos-latest'
@@ -47,3 +45,11 @@ jobs:
         run: |
           cd electron
           npm run publish
+
+      - name: Upload Linux AppImage
+        if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: appimage
+          path: electron/dist/*.AppImage
+          if-no-files-found: error

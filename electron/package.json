@@ -111,7 +111,7 @@
         },
         {
           "arch": "x64",
-          "target": "deb"
+          "target": "tar.gz"
         }
       ]
     },
