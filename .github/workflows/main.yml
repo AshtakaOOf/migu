@@ -10,10 +10,18 @@ on:
 jobs:
   release:
     runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
 
     strategy:
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        include:
+          - os: windows-latest
+            container: null
+          - os: ubuntu-latest
+            container: bilelmoussaoui/flatpak-github-actions:gnome-nightly
+            options: --privileged
+          - os: macos-latest
+            container: null
 
     steps:
       - name: Check out Git repository
